@@ -18,14 +18,34 @@
 #include "geometry_msgs/msg/quaternion.hpp"
 
 #include "mess2_msgs/msg/euler_angles.hpp"
-#include "mess2_plugins/rotation.hpp"
+#include "mess2_plugins/common.hpp"
+
+using Transform = geometry_msgs::msg::Transform;
+using Quaternion = geometry_msgs::msg::Quaternion;
 
 namespace mess2_plugins {
 
-geometry_msgs::msg::Transform update_measurement(const geometry_msgs::msg::Transform meas1, const geometry_msgs::msg::Transform meas2, const int64_t weight);
 
-geometry_msgs::msg::Quaternion get_vicon_calibration(const geometry_msgs::msg::Transform meas1, const geometry_msgs::msg::Transform meas2);
+    /**
+     * @brief recursively incorporates new measurements into a weighted average of already sampled measurements.
+     * 
+     * @param meas1 the current measurement average.
+     * @param meas2 the new measurement to be added to meas1.
+     * @param weight the weight of meas2 depending on the number of measurements averaged into meas1.
+     * @return the new Transform ROS2 object instance containing the updated measurement average.
+     */
+    Transform update_measurement(const Transform meas1, const Transform meas2, const int64_t weight);
 
-}  // namespace mess2_plugins
+
+    /**
+     * @brief find the difference quaternion necessary for the driver to correctly calibrate object orientations.
+     * 
+     * @param meas1
+     * @param meas2
+     * @return the difference quaternion.
+     */
+    Quaternion get_vicon_calibration(const Transform meas1, const Transform meas2);
+
+}
 
 #endif  // MESS2_PLUGINS__CALIBRATION_HPP_

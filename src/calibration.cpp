@@ -3,9 +3,10 @@
 
 namespace mess2_plugins {
 
-    geometry_msgs::msg::Transform update_measurement(const geometry_msgs::msg::Transform avg_, const geometry_msgs::msg::Transform new_, const int64_t weight)
+
+    Transform update_measurement(const Transform avg_, const Transform new_, const int64_t weight)
     {
-        geometry_msgs::msg::Transform result;
+        Transform result;
         result.translation.x = (avg_.translation.x * weight + new_.translation.x) / (weight + 1);
         result.translation.y = (avg_.translation.y * weight + new_.translation.y) / (weight + 1);
         result.translation.z = (avg_.translation.z * weight + new_.translation.z) / (weight + 1);
@@ -16,7 +17,8 @@ namespace mess2_plugins {
         return result;
     }
 
-    geometry_msgs::msg::Quaternion get_vicon_calibration(const geometry_msgs::msg::Transform meas1, const geometry_msgs::msg::Transform meas2)
+
+    Quaternion get_vicon_calibration(const Transform meas1, const Transform meas2)
     {
         double yaw = std::atan2(
             meas2.translation.y - meas1.translation.y,
@@ -31,12 +33,12 @@ namespace mess2_plugins {
         auto quat1 = meas1.rotation;
         auto quat2 = meas2.rotation;
 
-        auto temp1 = mess2_plugins::convert_eul_to_quat(euler);
-        auto temp2 = mess2_plugins::multiply_two_quats(quat1, quat2);
-        auto temp3 = mess2_plugins::invert_quat(temp2);
+        auto temp1 = mess2_plugins::convert_euler_angles_to_quaternion(euler);
+        auto temp2 = mess2_plugins::multiply_quaternions(quat1, quat2);
+        auto temp3 = mess2_plugins::invert_quaternion(temp2);
 
-        auto quat_diff = mess2_plugins::multiply_two_quats(temp3, temp1);
-        quat_diff = mess2_plugins::normalize_quat(quat_diff);
+        auto quat_diff = mess2_plugins::multiply_quaternions(temp3, temp1);
+        quat_diff = mess2_plugins::normalize_quaternion(quat_diff);
         return quat_diff;
     }
 

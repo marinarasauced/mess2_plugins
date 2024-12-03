@@ -13,18 +13,21 @@ find_package(sensor_msgs REQUIRED)
 
 include_directories(include)
 
-add_library(_common SHARED src/common.cpp)
-
+add_library(_mess2_plugins
+ src/common.cpp
+ src/calibration.cpp
+)
 
 ament_target_dependencies(
-  _common 
+  _mess2_plugins 
   "rclcpp" 
   "geometry_msgs" 
   "mess2_msgs"
 )
 
+
 install(
-  TARGETS _common
+  TARGETS _mess2_plugins
   EXPORT export_mess2_plugins
   DESTINATION lib/${PROJECT_NAME}
 )
