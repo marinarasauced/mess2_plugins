@@ -13,50 +13,18 @@ find_package(sensor_msgs REQUIRED)
 
 include_directories(include)
 
-add_library(_calibration SHARED src/calibration.cpp)
-add_library(_rotation SHARED src/rotation.cpp)
-add_library(_threat SHARED src/threat.cpp)
-add_library(_ugv SHARED src/ugv.cpp)
-add_library(_utils SHARED src/utils.cpp)
+add_library(_common SHARED src/common.cpp)
+
 
 ament_target_dependencies(
-  _calibration 
-  "rclcpp" 
-  "geometry_msgs" 
-  "mess2_msgs"
-)
-
-ament_target_dependencies(
-  _rotation 
-  "rclcpp" 
-  "geometry_msgs" 
-  "mess2_msgs"
-)
-
-ament_target_dependencies(
-  _threat 
-  "rclcpp" 
-  "geometry_msgs"
-  "mess2_msgs"
-  "sensor_msgs"
-)
-
-ament_target_dependencies(
-  _ugv 
-  "rclcpp" 
-  "geometry_msgs" 
-  "mess2_msgs"
-)
-
-ament_target_dependencies(
-  _utils
+  _common 
   "rclcpp" 
   "geometry_msgs" 
   "mess2_msgs"
 )
 
 install(
-  TARGETS _calibration _rotation _threat _ugv _utils
+  TARGETS _common
   EXPORT export_mess2_plugins
   DESTINATION lib/${PROJECT_NAME}
 )

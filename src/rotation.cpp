@@ -62,6 +62,10 @@ namespace mess2_plugins {
         return quat;
     }
 
+
+    
+
+
     geometry_msgs::msg::Quaternion invert_quat(geometry_msgs::msg::Quaternion quat) 
     {
         geometry_msgs::msg::Quaternion quat_inv;
